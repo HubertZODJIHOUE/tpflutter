@@ -7,7 +7,7 @@ class FakePostsDataSource extends PostsDataSource {
   /**
    * @TODO: Remplacer les données fictives par des données réelles
    *  On peut ajouter const  pour ne pas modifier la liste */
-  final List<Post> _fakePosts = [
+  final List<Post> _fakePosts = const [
     Post(id: '1', title: 'Post 1', description: 'Description of Post 1'),
     Post(id: '2', title: 'Post 2', description: 'Description of Post 2'),
     Post(id: '3', title: 'Post 3', description: 'Description of Post 3'),
@@ -15,13 +15,13 @@ class FakePostsDataSource extends PostsDataSource {
 
   @override
   Future<List<Post>> getAllPosts() async {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 0));
     return _fakePosts;
   }
 
   @override
   Future<Post> createPost(Post postToAdd) async {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 0));
     _fakePosts.add(postToAdd);
     return postToAdd;
   }

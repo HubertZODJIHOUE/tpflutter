@@ -4,12 +4,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../shared/blocs/posts_bloc/posts_bloc.dart';
 import '../shared/blocs/posts_bloc/posts_event.dart';
 import '../shared/blocs/posts_bloc/posts_state.dart';
-import '../shared/models/post.dart';
 import 'widgets/post_list_item.dart';
 import 'create_post_screen/create_post_screen.dart';
 
-class PostsScreen extends StatelessWidget {
+class PostsScreen extends StatefulWidget {
   const PostsScreen({super.key});
+
+  @override
+  State<PostsScreen> createState() => _PostsScreenState();
+}
+
+class _PostsScreenState extends State<PostsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // On déclenche la récupération des posts dès le lancement de l'application
+    context.read<PostsBloc>().add(GetAllPosts());
+  }
 
   @override
   Widget build(BuildContext context) {
