@@ -9,4 +9,5 @@ class PostsRepository {
   Future<List<Post>> getAllPosts() => dataSource.getAllPosts();
   Future<Post> createPost(Post postToAdd) => dataSource.createPost(postToAdd);
   Future<Post> updatePost(Post newPost) => dataSource.updatePost(newPost);
+  Future<void> deletePost(String postId) => dataSource.deletePost(postId);
 }

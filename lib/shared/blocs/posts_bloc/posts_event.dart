@@ -1,4 +1,4 @@
-// shared/blocs/posts_bloc/posts_event.dart
+
 import '../../models/post.dart';
 
 abstract class PostsEvent {}
@@ -13,4 +13,13 @@ class CreatePost extends PostsEvent {
 class UpdatePost extends PostsEvent {
   final Post post;
   UpdatePost(this.post);
+}
+
+class DeletePost extends PostsEvent {
+  final String postId;
+
+  DeletePost(this.postId);
+
+  @override
+  List<Object> get props => [postId];
 }

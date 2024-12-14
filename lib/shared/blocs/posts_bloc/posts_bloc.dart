@@ -1,7 +1,5 @@
-// shared/blocs/posts_bloc/posts_bloc.dart
-import 'package:bloc/bloc.dart';
-import '../../models/post.dart';
 
+import 'package:bloc/bloc.dart';
 import '../../services/services/repository/posts_repository.dart';
 import 'posts_event.dart';
 import 'posts_state.dart';
@@ -10,6 +8,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   final PostsRepository repository;
 
   PostsBloc({required this.repository}) : super(const PostsState()) {
+
     on<GetAllPosts>((event, emit) async {
       emit(state.copyWith(status: PostsStatus.loading));
       try {
@@ -20,19 +19,39 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       }
     });
 
+
     on<CreatePost>((event, emit) async {
+      emit(state.copyWith(status: PostsStatus.loading));
       try {
         await repository.createPost(event.post);
-        add(GetAllPosts()); // Refresh posts
+        final updatedPosts = List.of(state.posts)..add(event.post);
+        emit(state.copyWith(status: PostsStatus.success, posts: updatedPosts));
       } catch (e) {
         emit(state.copyWith(status: PostsStatus.error, errorMessage: e.toString()));
       }
     });
 
+
     on<UpdatePost>((event, emit) async {
+      emit(state.copyWith(status: PostsStatus.loading));
       try {
         await repository.updatePost(event.post);
-        add(GetAllPosts()); // Refresh posts
+        final updatedPosts = state.posts.map((post) {
+          return post.id == event.post.id ? event.post : post;
+        }).toList();
+        emit(state.copyWith(status: PostsStatus.success, posts: updatedPosts));
+      } catch (e) {
+        emit(state.copyWith(status: PostsStatus.error, errorMessage: e.toString()));
+      }
+    });
+
+
+    on<DeletePost>((event, emit) async {
+      emit(state.copyWith(status: PostsStatus.loading));
+      try {
+        await repository.deletePost(event.postId);
+        final updatedPosts = state.posts.where((post) => post.id != event.postId).toList();
+        emit(state.copyWith(status: PostsStatus.success, posts: updatedPosts));
       } catch (e) {
         emit(state.copyWith(status: PostsStatus.error, errorMessage: e.toString()));
       }
