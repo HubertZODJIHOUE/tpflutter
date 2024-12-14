@@ -1,8 +1,9 @@
+// shared/blocs/posts_bloc/posts_event.dart
 import '../../models/post.dart';
 
 abstract class PostsEvent {}
 
-class LoadPosts extends PostsEvent {}
+class GetAllPosts extends PostsEvent {}
 
 class CreatePost extends PostsEvent {
   final Post post;

@@ -1,15 +1,28 @@
+
 import '../../models/post.dart';
 
-abstract class PostsState {}
+enum PostsStatus { initial, loading, success, error }
 
-class PostsLoading extends PostsState {}
-
-class PostsLoaded extends PostsState {
+class PostsState {
+  final PostsStatus status;
   final List<Post> posts;
-  PostsLoaded(this.posts);
-}
+  final String? errorMessage;
 
-class PostsError extends PostsState {
-  final String message;
-  PostsError(this.message);
+  const PostsState({
+    this.status = PostsStatus.initial,
+    this.posts = const [],
+    this.errorMessage,
+  });
+
+  PostsState copyWith({
+    PostsStatus? status,
+    List<Post>? posts,
+    String? errorMessage,
+  }) {
+    return PostsState(
+      status: status ?? this.status,
+      posts: posts ?? this.posts,
+      errorMessage: errorMessage ?? this.errorMessage,
+    );
+  }
 }
